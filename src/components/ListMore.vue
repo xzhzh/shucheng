@@ -2,7 +2,7 @@
 	<div class="tab_wrap">
 		<div class="tab_wrap_box" >
 				<ul class="tab_wrap_box_ul" >
-					<li v-for= "item in items">
+					<li v-for= "item in items" @click="gotodetail(item)">
 						<div class="list_li">
 							<div class="list_inner_left">
 								<img :src="item.cover" alt="">
@@ -40,6 +40,7 @@
 				methos:'get',
 				url:"/rock/book/recommend?start='+'this.data'+'&count=10",
 			}).then((res)=>{
+				console.log(res.data.items)
 				for(var i=0; i<res.data.items.length; i++){
 					this.items.push(res.data.items[i])
 					res.data.items[i].sid=res.data.items[i].sid%1000
@@ -74,6 +75,7 @@
 				methos:'get',
 					url:"/rock/book/recommend?start='+'this.data'+'&count=10",
 				}).then((res)=>{
+
 					this.fetching=false;
 					for(var i=0; i<res.data.items.length; i++){
 						this.items.push(res.data.items[i])
@@ -88,6 +90,14 @@
 				})
 			}
 		},
+		methods:{
+			gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.book_id,
+					'title':val.title
+				}})
+			}
+		}
 	
 			
 		

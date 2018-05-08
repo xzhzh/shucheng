@@ -7,7 +7,7 @@
 			<div class="tab_wrap">
 				<div class="tab_wrap_box"  >
 						<ul class="tab_wrap_box_ul" >
-							<li v-for= "item in items">
+							<li v-for= "item in items" @click="gotodetail(item)">
 								<div class="list_li">
 									<div class="list_inner_left">
 										<img :src="item.cover" alt="">
@@ -51,6 +51,14 @@ import axios from 'axios'
 		     
 		    })
 		},
+		methods:{
+			gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.fiction_id,
+					'title':val.title
+				}})
+			}
+		}
 
 	}
 </script>

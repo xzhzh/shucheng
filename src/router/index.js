@@ -5,6 +5,7 @@ import Contain from '@/components/Contain'
 import Bookshelf from '@/components/Bookshelf'
 import Mostfire from '@/components/Mostfire'
 import Detail from '@/components/Detail'
+import Bookcontent from '@/components/Bookcontent'
 
 Vue.use(Router)
 
@@ -15,12 +16,13 @@ export default new Router({
       name: 'Index',
       component: Index,
       children:[
-          {path:'/contain',name:'Contain', component:Contain},
+          {path:'/',name:'Contain', component:Contain},
           {path:'/bookshelf',name:'bookshelf', component:Bookshelf}
        ]
     },
     {path:'/mostfire',name:'Mostfire',component:Mostfire},
-    {path:'/detail',name:'Detail',component:Detail}
+    {path:'/detail',name:'Detail',component:Detail},
+    {path:'/content',name:'Bookcontent',component:Bookcontent}
    
   ]
 })

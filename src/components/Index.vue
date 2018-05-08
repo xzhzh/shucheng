@@ -10,10 +10,8 @@
     </div>
   </div>
 </template>
-  <router-view></router-view>
-<!--  <Contain></Contain>
-<Bookshelf></Bookshelf> -->
-     
+    <router-view></router-view>
+      
   </div>
 </template>
 
@@ -21,8 +19,6 @@
 import Mint from 'mint-ui'
 import axios from 'axios'
 
-/*import Contain from '@/components/Contain'
-import Bookshelf from '@/components/Bookshelf'*/
 
 export default {
 name: 'Index',
@@ -31,7 +27,7 @@ data () {
       nowindex:1
   }
 },
-activated(){
+mounted(){
       Mint.Indicator.open({
         text: '加载中...',
         spinnerType: 'fading-circle'
@@ -43,14 +39,14 @@ activated(){
       Mint.Indicator.close();
       var str = JSON.stringify(res.data)
       localStorage.setItem("items",str)
-      console.log(res)
+     /* console.log(res)*/
     })
 },
 methods:{
   tabclick(val){
       this.nowindex=val
       if(val==1){
-        this.$router.push({path:'/contain'})
+        this.$router.push({path:'/'})
       }
       else{
         this.$router.push({path:'/bookshelf'})
@@ -58,16 +54,20 @@ methods:{
     }
   },
 components:{
-  /*Bookshelf,
-  Contain,*/
+    /* 'swipe':Swipe,
+     'swipe-item':SwipeItem*/
 }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello{
+  height: 100%;
+}
 .header-tab{
-  padding: 0px 90px;
+    padding: 0px 90px;
     text-align: center;
     position: fixed;
     top:0;

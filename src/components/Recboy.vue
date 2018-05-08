@@ -2,7 +2,7 @@
 	<div class="tab_wrap">
 		<div class="tab_wrap_box" v-if="tuijian" >
 				<ul class="tab_wrap_box_ul" >
-					<li >
+					<li @click="gotodetail(tuijian)">
 						<div class="list_li">
 							<div class="list_inner_left">
 								<img :src="tuijian.cover" alt="">
@@ -20,7 +20,7 @@
 							</div>
 						</div>
 					</li>
-					<li v-for="(list, index) in tuijian.lists">
+					<li v-for="(list, index) in tuijian.lists" @click="gotodetail(list)">
 						<div class="book_list">
 							<span class="order">{{index+2}}</span>
 							<div class="book_list_info">
@@ -79,6 +79,12 @@
 					this.tuijian_index=0
 				}
 				this.tuijian = this.items[this.tuijian_index];
+			},
+			gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.fiction_id,
+					'title':val.title
+				}})
 			}
 		}
 	}

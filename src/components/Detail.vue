@@ -10,17 +10,58 @@
 							<li >
 								<div class="list_li">
 									<div class="list_inner_left">
-										<img src="/static/image/14.jpg!s" alt=""> 
+										<img :src="items.cover" alt="">
 										<!-- <p class="list_inner_finish">{{item.finish}}</p> -->
 									</div>
 									<div class="list_inner_right">
-										<p class="book_list_title">东方化工</p>
-										<p class="book_list_author"><span>德国</span></p>
-										<p class="book_list_summery">变更法人和</p>
+										<p class="book_list_title">{{this.$route.query.title}}</p>
+										<p class="book_list_author"><span>{{items.authors}}</span></p>
+										<div class="star">
+											<div class="starbox">
+											  <img class="star1" src="/static/image/star.svg" title="1分" />
+											  <img class="star1" src="/static/image/star.svg" title="2分" />
+											  <img class="star1" src="/static/image/star.svg" title="3分" />
+											  <img  class="star1" src="/static/image/star.svg" title="4分" />
+											  <img class="star1" src="/static/image/star.svg" title="5分" />
+											</div>
+											<span class="ping">{{items.score_count}}个评价</span>
+										</div>
+										<p class="book_list_price">价格:{{items.price}}书币/一千字</p>
+										<p class="book_list_price">字数：{{items.word_count}}字</p>
 									</div>
+								</div>
+								<ul class="read">
+									<li @click="gotocontent()">开始阅读</li>
+									<li>下载</li>
+								</ul>
+								<div class="book_list_amri">
+									{{items.content}}
+								</div>
+								<p class="update">最新：{{items.latest}} 更新于 {{items.updated}}</p>
+								<div class="type_tag">
+									<p class="type_tag_title">类别标签</p>
+									<span v-for="tab in items.tags">{{tab}}</span>
+									
+								</div>
+								<div class="elsebook">
+									<p class="elsebook_title">作者其他图书</p>
+									<ul>
+										<li v-for="val in author_book"> 
+										<img :src="val.cover" alt="">
+										   <p class="elsebook_comtnt">{{val.title}}</p>
+										</li>
+										
+									</ul>
+								</div>
+								<div class="elsebook">
+									<p class="elsebook_title">图书信息</p>
+									<p class="bookdetail">版权：{{items.rights}}
+									</p>
+									
 								</div>
 							</li>
 						</ul>
+
 				</div>
 				
 	    </div>
@@ -29,11 +70,14 @@
 <script>
 import Mint from 'mint-ui'
 import axios from 'axios'
+import moment from 'moment'
 
 	export default{
 		data(){
 			return{
-				items:[]
+				items:{},
+				author_book:[]
+
 			}
 			
 		},
@@ -49,14 +93,26 @@ import axios from 'axios'
 		        url:'/hs/v0/android/fiction/book/'+id
 		    }).then((res)=>{
 		    	console.log(res)
-		    	this.items=res.data.items
-		        Mint.Indicator.close(); 
+		    	this.items=res.data.item
+		    	this.author_book=res.data.author_books
+		        Mint.Indicator.close();
+		       	this.items.word_count=Math.floor(this.items.word_count/10000)
+		       	this.items.updated=moment(this.items.updated*1000).format('YYYY-MM-DD HH:mm:ss')
+		 
 		     
 		    })
 	    },
 	    methods:{
 	    	back(){
 	    		window.history.go(-1)
+	    	},
+	    	gotohome(){
+	    		this.$router.push({
+	    			path:"/"
+	    		})
+	    	},
+	    	gotocontent(){
+	    		this.$router.push({path:'/content'})
 	    	}
 	    }
 
@@ -102,7 +158,7 @@ import axios from 'axios'
 }
 .tab_wrap_box_ul li{
 	padding: 17px 0;
-    border-bottom: 1px solid #f0f0f0;
+   /*  border-bottom: 1px solid #f0f0f0; */
 }
 .tab_wrap_box_ul .list_li{
 	overflow: hidden;
@@ -122,28 +178,7 @@ import axios from 'axios'
 	height: 100%;
 	border-radius: 1px;
 }
-.list_inner_finish{
-	position: absolute;
-    bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
-    font: 10px/10px a;
-    padding: 25px 7px 6px;
-    color: #fff;
-     background:linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.3));
-    background: -webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.3));
-}
-.list_inner_order{
-	position: absolute;
-    left: 3px;
-    top: 0;
-    padding: 2px 1px 2px 4px;
-    height: 17px;
-    width: 12px;
-    font-size: 12px;
-    color: #fff;
-    background: #ffab18;
-}
+
 .list_inner_right{
 	margin-left: 100px;
 	padding-top: 6px;
@@ -164,15 +199,106 @@ import axios from 'axios'
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.book_list_summery{
-	display: -webkit-box;
-    margin: 8px 0 0;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.6);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+.star{
+	margin-top: 3px;
+}
+.starbox{
+	float: left;
+}
+.starbox .star1{
+  width: 12px;
+}
+.ping{
+	font-size: 12px;
+	margin-left:5px;
+	color: #aaa;
+}
+.book_list_price{
+	font-size: 12px;
+	color: #444;
+	margin-top: 3px;
 }
 
+.read{
+	display: flex;
+}
+.read li{
+	flex: 1;
+	margin: 3px 5px;
+	text-align: center;
+	border: 1px solid #ccc;
+	padding: 0;
+	margin-top: 15px;
+	line-height: 35px;
+}
+.read li:nth-of-type(1){
+	color: #fff;
+	background: #f35d02;
+	border: 1px solid #f35d02;
+}
+.book_list_amri{
+	margin-top: 15px;
+	font-size: 14px;
+	color:#585858 ;
+	line-height: 25px;
+	display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.update{
+	font-size: 14px;
+	color: #8d8d8d;
+	padding:14px 10px;
+	border-bottom: 1px solid #ccc ;
+}
+.type_tag{
+	padding-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+}
+.type_tag_title{
+	font-size: 16px;
+	color: #8d8d8d;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.type_tag span{
+	border: 1px solid #ccc;
+	padding: 3px 8px ;
+	margin: 5px 3px;
+	display: inline-block;
+	background: #fcedda;
+	border-radius: 4px;
+}
+.elsebook {
+	padding: 15px 0;
+}
+.elsebook_title{
+	font-size: 16px;
+	color: #8d8d8d;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.elsebook ul{
+	width: 100%;
+	display: flex;
+}
+.elsebook ul li{
+	width:33.333%;
+	margin: 5px;
+	/* flex: 1; */
+}
+.elsebook ul li img{
+	width:100%;
+}
+.bookdetail{
+	font-size: 14px;
+	color: #aaa;
+}
+.elsebook_comtnt{
+	color: #333;
+}
 </style>

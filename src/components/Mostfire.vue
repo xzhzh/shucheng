@@ -6,8 +6,8 @@
 		</section>
 			<div class="tab_wrap">
 				<div class="tab_wrap_box"  >
-						<ul class="tab_wrap_box_ul" >
-							<li v-for= "item in items">
+						<ul class="tab_wrap_box_ul">
+							<li v-for= "item in items" @click="gotodetail(item)">
 								<div class="list_li">
 									<div class="list_inner_left">
 										<img :src="item.cover" alt="">
@@ -50,7 +50,7 @@ import axios from 'axios'
 		        method:'get',
 		        url:'store/v0/fiction/list/11059?start='+'this.data'+'&count=10'
 		    }).then((res)=>{
-		    	
+		    	/*console.log(res)*/
 		    	this.items=res.data.items
 		        Mint.Indicator.close(); 
 
@@ -78,6 +78,15 @@ import axios from 'axios'
 		methods:{
 				back(){
 					window.history.go(-1)
+				},
+				gotohome(){
+					this.$router.push({path:'/'})
+				},
+				gotodetail(val){
+					this.$router.push({path:'/detail',query:{
+						'fiction_id':val.fiction_id,
+						'title':val.title
+					}})
 				}
 				
 		},

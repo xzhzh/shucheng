@@ -5,7 +5,7 @@
 			</div>
 		<div class="tab_wrap_box" v-if="nvsheng" >
 				<ul class="tab_wrap_box_ul" >
-					<li v-for= "item in nvsheng">
+					<li v-for= "item in nvsheng" @click="gotodetail(item)">
 						<div class="list_li">
 							<div class="list_inner_left">
 								<img :src="item.cover" alt="">
@@ -67,6 +67,12 @@
 					this.tuijian_index=0
 				}
 				this.nvsheng = this.items[this.tuijian_index];
+			},
+			gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.fiction_id,
+					'title':val.title
+				}})
 			}
 		}
 	}

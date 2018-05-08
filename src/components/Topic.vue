@@ -4,7 +4,7 @@
 			<p class="channel_tab_header_title">精选专题<span>热</span></p>
 		</div>
 		<ul class="pic_box">
-			<li v-for="icon in pic.data">
+			<li v-for="icon in pic.data" @click="gotodetail(icon)">
 				<img :src="icon.ad_pic_url" alt="">
 			</li>
 			<a href="" class="channel_groud_footer">更多精彩专题>></a>
@@ -20,7 +20,15 @@
 		},
 		mounted(){
 			this.pic=JSON.parse(localStorage.items).items[6].data
-			/*console.log(this.pic)*/
+			/*console.log(this.pic.data)*/
+		},
+		methods:{
+			gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.reference_id,
+					'title':val.ad_name
+				}})
+			}
 		}
 	}
 </script>

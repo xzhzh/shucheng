@@ -3,7 +3,7 @@
 		<section class="channel_groud">
 			<div class="channel_header">限时免费</div>
 			<ul class="book_table">
-				<li v-for="list in item.data">
+				<li v-for="list in item.data" @click="gotodetail(list.data)">
 					<img :src="list.data.book_cover" alt="">
 					<div class="free_tip"></div>
 					<h3 class="book_table_title">{{list.ad_name}}</h3>
@@ -24,6 +24,14 @@ import axios from 'axios'
 		mounted(){
 			this.item=JSON.parse(localStorage.items).items[5].data
 			/*console.log(this.item)*/
+		},
+		methods:{
+			gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.fiction_id,
+					'title':val.title
+				}})
+			}
 		}
 	}
 </script>
