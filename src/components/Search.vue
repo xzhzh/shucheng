@@ -1,12 +1,20 @@
 <template>
-	<div class="mosefire">
-		<section class="fire">
-			<div class="fireback" @click="back()"> < 本周最火 </div>
-			<img class="right_icom" src="/static/image/10.png" alt="" @click="gotohome()">
-		</section>
-			<div class="tab_wrap">
+	<div class="top">
+		<div class="top_tit">
+			<a href="javascript:history.back()" class="top__back"><i class="fa fa-angle-left back"></i></a>
+			<div id="search-input" class="search-input">
+			    <b class="search-input_mi"></b>
+			    <input type="text" v-model="sid"  placeholder="输入书名/作者/关键字">
+			    <div class="search-input__btn" id="Tag__146" @click="search()">搜索</div>
+			</div>
+		</div>
+		
+		<!-- <ul class="tab">
+			<li v-for="item in items.ads">{{item.ad_name}}</li>
+		</ul> -->
+		<div class="tab_wrap">
 				<div class="tab_wrap_box"  >
-						<ul class="tab_wrap_box_ul">
+						<ul class="tab_wrap_box_ul" >
 							<li v-for= "item in items" @click="gotodetail(item)">
 								<div class="list_li">
 									<div class="list_inner_left">
@@ -15,130 +23,186 @@
 									</div>
 									<div class="list_inner_right">
 										<p class="book_list_title">{{item.title}}</p>
-										<p class="book_list_author"><span>{{item.authors}}</span></p>
-										<p class="book_list_summery">{{item.summary}}</p>
+										<p class="book_list_summery">{{item.intro}}</p>
+										<br>
+										<p class="book_list_author"><span>{{item.role[0][1]}}</span></p>
 									</div>
 								</div>
 							</li>
 						</ul>
+						<mt-spinner class="get_more" color="#26a2ff" type="fading-circle" >加载更多</mt-spinner>
 				</div>
-				<mt-spinner class="get_more" color="#26a2ff" type="fading-circle" v-show='showmore==1'>加载更多</mt-spinner>
-				<div class="mort_style" v-show="showmore==0">更多主题</div>
-	    </div>
+			
+	     </div>
+
 	</div>
 </template>
 <script>
-import Mint from 'mint-ui'
+import Mint from 'mint-ui';
 import axios from 'axios'
-	export default{
-		data(){
-			return{
-				items:[
-				  {cover:'/static/image/14.jpg!s',finish:'完结',title:'极品逍遥大少爷',authors:'陈东',summary:'最新: 第4040章：新的征程（大结局）'},
-				],
-				data:this.$store.state.fire,
-				fetching:false,
-				showmore:1
-			}
-		},
-		mounted(){
-		      Mint.Indicator.open({
-		        text: '加载中...',
-		        spinnerType: 'fading-circle'
-		      });
-		      axios({
-		        method:'get',
-		        url:'store/v0/fiction/list/11059?start='+'this.data'+'&count=10'
-		    }).then((res)=>{
-		    	console.log(res)
-		    	this.items=res.data.items
-		        Mint.Indicator.close(); 
+export default{
+	data(){
+		return{
+			items:[],
+			sid:"",
+			data:0,
+			fetching:false,
 
-		        var  self=this
+		}
+		
+	},
+	mounted(){
+	},
+	methods:{
+
+		search(){
+			console.log(this.sid)
+			Mint.Indicator.open({
+			text: '加载中...',
+			spinnerType: 'fading-circle'
+		   });
+		axios({
+		   method:'get',
+		   url:'store/v0/lib/query/onebox?start='+this.data+'&count=10&s='+this.sid+'&source=2%2C5'
+		}).then((res)=>{
+			Mint.Indicator.close();
+			this.items=res.data.items
+			console.log(res.data)
+
+
+			    /*var  self=this
 				$(window).scroll(function(){
 				　　var scrollTop = $(this).scrollTop();
 				　　var scrollHeight = $(document).height();
 				　　var windowHeight = $(this).height();
 			　　  if(scrollTop + windowHeight>= scrollHeight){
 						if(!self.fetching){
-							if(self.data>=10){
-								self.data=10
-							}else{
 								self.data=self.data+10
-							}
 						}else{
 							return
 						}
 			　　}
-			   });
-		     
-		    })
-		        
+			   });*/
+		 
+	    })
 		},
-		methods:{
-				back(){
-					window.history.go(-1)
-				},
-				gotohome(){
-					this.$router.push({path:'/'})
-				},
-				gotodetail(val){
-					this.$router.push({path:'/detail',query:{
-						'fiction_id':val.fiction_id,
-						'title':val.title
-					}})
-				}
-				
-		},
-		watch:{
-			'data'(){
-				  this.fetching=true;
-					if(this.data==10){
-						axios({
-					        method:'get',
-					        url:'store/v0/fiction/list/11059?start='+'this.data'+'& count=10'
-					    }).then((res)=>{
-					    	this.fetching=false;
-					    	this.items=res.data.items
-					    	this.showmore=0;
-					     })
-					}
-					
-				}
-			
+		gotodetail(val){
+			this.$router.push({path:'/detail',query:{
+				'fiction_id':val.id,
+				'title':val.title
+			}})
 		}
-
+	},
+	watch:{
+		'data'(){
+		  this.fetching=true;
+			axios({
+		        method:'get',
+		        url:'store/v0/lib/query/onebox?start='+this.data+'&count=10&s='+this.sid+'&source=2%2C5'
+		    }).then((res)=>{
+		    	this.fetching=false;
+		    	for(var i=0; i<res.data.items.length ; i++){
+		    		this.items.push(res.data.items[i])
+		    	}
+		     })
+		}
 	}
+}
 </script>
-<style scoped>
-.mosefire{
-	overflow: hidden;
-	padding-top:40px;
-}
-
-.fire{
+<style>
+.top{
 	width: 100%;
-	position: fixed;
-	top: 0;
 	overflow: hidden;
-	line-height: 30px;
-	height: 40px;
+}
+.top_tit{
+	position: fixed;
+	width: 100%;
+	height: 44px;
+	z-index: 5;
 	background: #efeff0;
-	padding: 5px 10px;
-	z-index: 2;
-	box-sizing: border-box;
+    border-bottom: 1px solid #ddd;
+    color: rgba(0, 0, 0, 0.7);
 }
-.mosefire  .fireback{
+.top a{
 	float: left;
+    width: 42px;
+    height: 44px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
 }
-.right_icom{
-	margin-top: 5px;
-	float: right;
+.back{
+	font-size: 35px;
+	margin-left: 10px;
+	margin-top: 4px;
+}
+.search-input {
+    position: relative;
+    margin: 5px 20px 5px 42px;
+    height: 35px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+.search-input b {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 35px;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    background-size: 17px 17px;
+}
+.search-input_mi {
+    background: url('/static/image/search.png') no-repeat center;
+}
+.search-input input {
+    border: none;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 8px 52px 8px 42px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.8);
+    background: #fff;
+}
+.search-input__btn {
+    display: block;
+    line-height: 36px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-left: 1px solid #ddd;
+    padding: 0 8px;
+    font-size: 14px;
+    color: #666;
+}
+.top .tab{
+	width:100%;
+	padding: 15px;
+	overflow: hidden;
+}
+.top .tab li{
+	display: inline-block;
+    width: auto;
+    padding: 0 20px;
+    color: #766d5d;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+}
+.top .tab li:nth-child(3n+1){
+	background:#fbebe8;
+}
+.top .tab li:nth-child(3n+2){
+	background:#fcedda;
 }
 
 
 .tab_wrap{
 	float: left;
+	top: 40px;
     position: relative;
     width: 100%;
     margin-right: -100%;
@@ -309,15 +373,6 @@ import axios from 'axios'
 	margin: 0 auto;
 	left: 47%;
 	top: 5px;
-	display: block;
-}
-.mort_style{
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	position: relative;
-	bottom:0px;
-	margin: 0 auto;
 	display: block;
 }
 </style>

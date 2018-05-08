@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<section class="top_home">
-			<div class="top_home_search">输入书名/作者/关键子</div>
+			<div class="top_home_search" @click="search()">输入书名/作者/关键子</div>
 			<div class="slider_banner">
 				<ul class="toppic" >
 					<li class="banner" v-for= "item in item"><a href=""><img :src="item.ad_pic_url" alt=""></a></li>
@@ -83,7 +83,11 @@ methods:{
 			'fiction_id':val.fiction_id,
 			'title':val.title
 		}})
+	},
+	search(){
+		this.$router.push({path:'/search'})
 	}
+	
 },
 components:{
 	recommend
