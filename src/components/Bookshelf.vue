@@ -1,7 +1,7 @@
 <template>
 	<div class="bookshelf">
 		<section class="self">
-			<div class="shelf_search">输入书名/作者/关键子</div>
+			<div class="shelf_search" @click="search()">输入书名/作者/关键子</div>
 			<img class="self_chang" src="/static/image/09.png" alt="">
 		</section>
 			<div class="tab_wrap">
@@ -57,7 +57,10 @@ import axios from 'axios'
 					'fiction_id':val.fiction_id,
 					'title':val.title
 				}})
-			}
+			},
+			search(){
+					this.$router.push({path:'/search'})
+				}
 		}
 
 	}

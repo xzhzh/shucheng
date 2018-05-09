@@ -40,7 +40,7 @@
 				methos:'get',
 				url:"/rock/book/recommend?start='+'this.data'+'&count=10",
 			}).then((res)=>{
-				console.log(res.data.items)
+				/*console.log(res.data.items)*/
 				for(var i=0; i<res.data.items.length; i++){
 					this.items.push(res.data.items[i])
 					res.data.items[i].sid=res.data.items[i].sid%1000

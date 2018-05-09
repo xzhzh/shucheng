@@ -46,7 +46,7 @@
 								<div class="elsebook">
 									<p class="elsebook_title">作者其他图书</p>
 									<ul>
-										<li v-for="val in author_book"> 
+										<li v-for="val in author_book" @click="gotodetail(val)"> 
 										<img :src="val.cover" alt="">
 										   <p class="elsebook_comtnt">{{val.title}}</p>
 										</li>
@@ -92,12 +92,13 @@ import moment from 'moment'
 		        method:'get',
 		        url:'/hs/v0/android/fiction/book/'+id
 		    }).then((res)=>{
-		    	console.log(res)
+		    	/*console.log(res)*/
 		    	this.items=res.data.item
 		    	this.author_book=res.data.author_books
 		        Mint.Indicator.close();
 		       	this.items.word_count=Math.floor(this.items.word_count/10000)
 		       	this.items.updated=moment(this.items.updated*1000).format('YYYY-MM-DD HH:mm:ss')
+		       	console.log(this.author_book)
 		 
 		     
 		    })
@@ -113,7 +114,13 @@ import moment from 'moment'
 	    	},
 	    	gotocontent(){
 	    		this.$router.push({path:'/content'})
-	    	}
+	    	},
+	    	gotodetail(val){
+				this.$router.push({path:'/detail',query:{
+					'fiction_id':val.book_id,
+					'title':val.title
+				}})
+			}
 	    }
 
 	}

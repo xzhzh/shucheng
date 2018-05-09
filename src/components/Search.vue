@@ -70,7 +70,7 @@ export default{
 			console.log(res.data)
 
 
-			    /*var  self=this
+			    var  self=this
 				$(window).scroll(function(){
 				　　var scrollTop = $(this).scrollTop();
 				　　var scrollHeight = $(document).height();
@@ -82,7 +82,7 @@ export default{
 							return
 						}
 			　　}
-			   });*/
+			   });
 		 
 	    })
 		},
@@ -210,7 +210,7 @@ export default{
 }	
 .tab_wrap_box{
 
-	/*display: none;*/
+	position: relative;
 }
 .tab_wrap_box_ul{
 	padding: 0 13px;

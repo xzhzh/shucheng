@@ -113,7 +113,7 @@ import axios from 'axios'
 <style scoped>
 .mosefire{
 	overflow: hidden;
-	padding-top:40px;
+	/* padding-top:40px; */
 }
 
 .fire{
