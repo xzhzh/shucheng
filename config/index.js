@@ -22,6 +22,14 @@ module.exports = {
         '/store':{
             target:"http://dushu.xiaomi.com/",
             changeOrigin:true
+        },
+        '/mfsv2':{
+            target:"http://html.read.duokan.com/",
+            changeOrigin:true 
+        },
+        '/drm':{
+            target:"http://dushu.xiaomi.com/",
+            changeOrigin:true 
         }
     },
 

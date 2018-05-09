@@ -1,5 +1,5 @@
 <template>
-	<div class="top">
+	<div class="top search1">
 		<div class="top_tit">
 			<a href="javascript:history.back()" class="top__back"><i class="fa fa-angle-left back"></i></a>
 			<div id="search-input" class="search-input">
@@ -109,7 +109,7 @@ export default{
 	}
 }
 </script>
-<style>
+<style scoped>
 .top{
 	width: 100%;
 	overflow: hidden;

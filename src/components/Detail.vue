@@ -18,11 +18,7 @@
 										<p class="book_list_author"><span>{{items.authors}}</span></p>
 										<div class="star">
 											<div class="starbox">
-											  <img class="star1" src="/static/image/star.svg" title="1分" />
-											  <img class="star1" src="/static/image/star.svg" title="2分" />
-											  <img class="star1" src="/static/image/star.svg" title="3分" />
-											  <img  class="star1" src="/static/image/star.svg" title="4分" />
-											  <img class="star1" src="/static/image/star.svg" title="5分" />
+
 											</div>
 											<span class="ping">{{items.score_count}}个评价</span>
 										</div>
@@ -31,7 +27,7 @@
 									</div>
 								</div>
 								<ul class="read">
-									<li @click="gotocontent()">开始阅读</li>
+									<li @click="gotocontent(items)">开始阅读</li>
 									<li>下载</li>
 								</ul>
 								<div class="book_list_amri">
@@ -57,7 +53,6 @@
 									<p class="elsebook_title">图书信息</p>
 									<p class="bookdetail">版权：{{items.rights}}
 									</p>
-									
 								</div>
 							</li>
 						</ul>
@@ -98,9 +93,27 @@ import moment from 'moment'
 		        Mint.Indicator.close();
 		       	this.items.word_count=Math.floor(this.items.word_count/10000)
 		       	this.items.updated=moment(this.items.updated*1000).format('YYYY-MM-DD HH:mm:ss')
-		       	console.log(this.author_book)
-		 
-		     
+		       /*	console.log(this.items.score)*/
+		       	var score=this.items.score
+		       	if(score<2){
+		       		$('.starbox').css('background-position', '0 0');
+		       	}
+		       	else if(score>=2&&score<4){
+		       		$('.starbox').css('background-position', '0 -34px');
+		       	}
+		       	else if(score>=4&&score<6){
+		       		$('.starbox').css('background-position', '0 -64px');
+		       	}
+		       	else if(score>=6&&score<8){
+		       		$('.starbox').css('background-position', '0 -98px');
+		       	}
+		       	else if(score>=8&&score<9.5){
+		       		$('.starbox').css('background-position', '0 -128px');
+		       	}
+		       	else{
+		       		$('.starbox').css('background-position', '0 -163px');
+		       	}
+		       
 		    })
 	    },
 	    methods:{
@@ -112,8 +125,10 @@ import moment from 'moment'
 	    			path:"/"
 	    		})
 	    	},
-	    	gotocontent(){
-	    		this.$router.push({path:'/content'})
+	    	gotocontent(val){
+	    		this.$router.push({path:'/content',query:{
+	    			'fiction_id':val.fiction_id,
+	    		}})
 	    	},
 	    	gotodetail(val){
 				this.$router.push({path:'/detail',query:{
@@ -211,6 +226,12 @@ import moment from 'moment'
 }
 .starbox{
 	float: left;
+	height: 16px;
+    width: 80px;
+    margin: 0 5px 0 0;
+    background: url("/static/image/start.png");
+    background-size: 80px;
+     background-position: 0 -163px; 
 }
 .starbox .star1{
   width: 12px;

@@ -1,14 +1,17 @@
 <template>
 	<div class="content">
-		<h3 class="content_title">进城</h3>
-		<div class="reader__content">
-			一个二十来岁的青年人站在镇海市客运站前，望着周边的高楼大厦，街上的车水马龙，形形色色的人群，就是一阵眼晕，唏嘘不已。
+		<div>
+			<h3 class="content_title">{{items.t}}</h3>
+			<p class="reader__content" v-for="list in items.p">
+				{{list}}
+			</p>
 		</div>
 	</div>
 </template>
 <script>
 import Mint from 'mint-ui'
 import axios from 'axios'
+import { Base64 } from 'js-base64';
 	export default{
 		data(){
 			return{
@@ -22,17 +25,18 @@ import axios from 'axios'
 		      });
 		      axios({
 		        method:'get',
-		        url:'/store/v0/fiction/detail/352876'
+		        url:"mfsv2/secure/fdsc3/60009/file?nonce=11a98e428137471982f808ff460d607d&token=NuXIzAh93h2w99ricPIxasqkJDsTb5PUOxsaK5z-GGBXQ_xl8Q2bHx0NDx2tShL-w2Uj5V4Wsmb7YbuoPsmLI2IEPlR7RWQy_B6sggV5JAY&sig=5Vn3R-Eov3VQAQ38ElVIOs7t5dM"
+
 		    }).then((res)=>{
 		      Mint.Indicator.close();
-		      /*var str = JSON.stringify(res.data)
-		      localStorage.setItem("items",str)*/
-		      console.log(res)
+		      var base=res.data.toString().split("'")[1]
+		      this.items=JSON.parse(Base64.decode(base))
+		      console.log(JSON.parse(Base64.decode(base)))
 		    })
 		},
 	}
 </script>
-<style>
+<style scoped>
 .content{
 	height: 100%;
 	background:#f7eee5;
@@ -45,6 +49,9 @@ import axios from 'axios'
     line-height: 31px;
     color: #736357;
     letter-spacing: 2px;
+}
+.reader__content{
+	text-indent: 2em;
 }
 
 	

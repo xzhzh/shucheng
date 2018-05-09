@@ -136,7 +136,6 @@ import axios from 'axios'
 	float: right;
 }
 
-
 .tab_wrap{
 	float: left;
     position: relative;
