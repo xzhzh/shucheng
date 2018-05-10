@@ -88,7 +88,7 @@ export default{
 		},
 		gotodetail(val){
 			this.$router.push({path:'/detail',query:{
-				'fiction_id':val.id,
+				'fiction_id':val.source_id,
 				'title':val.title
 			}})
 		}

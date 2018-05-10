@@ -1,11 +1,12 @@
 <template>
 	<div class="content">
-		<div>
-			<h3 class="content_title">{{items.t}}</h3>
-			<p class="reader__content" v-for="list in items.p">
+		<div v-for="item in items" class="mar_bo">
+			<h3 class="content_title">{{item.t}}</h3>
+			<p class="reader__content" v-for="list in item.p">
 				{{list}}
 			</p>
 		</div>
+		<mt-spinner v-show="items.length" class="get_more" color="#2222" type="fading-circle">加载更多</mt-spinner>
 	</div>
 </template>
 <script>
@@ -15,7 +16,10 @@ import { Base64 } from 'js-base64';
 	export default{
 		data(){
 			return{
-				items:[]
+				items:[],
+				fic_id:localStorage.page==0?'localStorage.page':'0',
+				fetching:false,
+
 			}
 		},
 		mounted(){
@@ -23,17 +27,77 @@ import { Base64 } from 'js-base64';
 		        text: '加载中...',
 		        spinnerType: 'fading-circle'
 		      });
+		    
 		      axios({
 		        method:'get',
-		        url:"mfsv2/secure/fdsc3/60009/file?nonce=11a98e428137471982f808ff460d607d&token=NuXIzAh93h2w99ricPIxasqkJDsTb5PUOxsaK5z-GGBXQ_xl8Q2bHx0NDx2tShL-w2Uj5V4Wsmb7YbuoPsmLI2IEPlR7RWQy_B6sggV5JAY&sig=5Vn3R-Eov3VQAQ38ElVIOs7t5dM"
+		        url:'/api/private/dushu/getDushuCallbackUrl?fiction_id='+this.$route.query.fiction_id+'&chapter_id='+this.fic_id+'&format=jsonp'
 
 		    }).then((res)=>{
+		      var url=res.data.url.indexOf('/mfsv2')
+		      var urel=res.data.url.substring(url)
 		      Mint.Indicator.close();
+
+		      var  self=this
+				$(window).scroll(function(){
+				　　var scrollTop = $(this).scrollTop();
+				　　var scrollHeight = $(document).height();
+				　　var windowHeight = $(this).height();
+			　　if(scrollTop + windowHeight+20>= scrollHeight){
+						if(!self.fetching){
+							console.log(self.fic_id)
+							self.fic_id=parseInt(self.fic_id)+1
+							if(typeof(localStorage.page)!=='number'){
+							}
+							localStorage.page=parseInt(localStorage.page)+1
+						}
+						　
+			　　}
+			   });
+
+		    axios({
+		        method:'get',
+		        url:urel
+		    }).then((res)=>{
 		      var base=res.data.toString().split("'")[1]
-		      this.items=JSON.parse(Base64.decode(base))
-		      console.log(JSON.parse(Base64.decode(base)))
+		      this.items.push(JSON.parse(Base64.decode(base)))
+		       Mint.Indicator.close();
+		     /* console.log(JSON.parse(Base64.decode(base)))*/
+		      
+		    })
+
+
+		     
 		    })
 		},
+		watch:{
+			"fic_id"(){
+				this.fetching=true;
+			axios({
+		        method:'get',
+		        url:'/api/private/dushu/getDushuCallbackUrl?fiction_id='+this.$route.query.fiction_id+'&chapter_id='+this.fic_id+'&format=jsonp'
+		    }).then((res)=>{
+		      var url=res.data.url.indexOf('/mfsv2')
+		      var urel=res.data.url.substring(url)
+		      this.fetching=false;
+		      Mint.Indicator.close();
+		    axios({
+		        method:'get',
+		        url:urel
+		    }).then((res)=>{
+		   /*  console.log(res.data)*/
+		      var base=res.data.toString().split("'")[1]
+		      var datall=JSON.parse(Base64.decode(base))
+		      this.items.push(datall)
+		     /*  console.log(JSON.parse(Base64.decode(base)))*/
+		    
+		      
+		    })
+
+
+		     
+		    })
+			}
+		}
 	}
 </script>
 <style scoped>
@@ -41,6 +105,9 @@ import { Base64 } from 'js-base64';
 	height: 100%;
 	background:#f7eee5;
 	padding: 0 10px;
+	width: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
 }
 .content .content_title{
     margin-bottom: 20px;
@@ -50,8 +117,22 @@ import { Base64 } from 'js-base64';
     color: #736357;
     letter-spacing: 2px;
 }
-.reader__content{
+.content .reader__content{
 	text-indent: 2em;
+}
+.content .mar_bo{
+	padding-bottom: 20px;
+}
+.content .get_more{
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	position: relative;
+	bottom:0px;
+	margin: 0 auto;
+	left: 47%;
+	top: 5px;
+	display: block;
 }
 
 	

@@ -30,6 +30,10 @@ module.exports = {
         '/drm':{
             target:"http://dushu.xiaomi.com/",
             changeOrigin:true 
+        },
+        '/api':{
+            target:"http://admin2.eryicaier.com/",
+            changeOrigin:true 
         }
     },
 
