@@ -17,7 +17,7 @@ import { Base64 } from 'js-base64';
 		data(){
 			return{
 				items:[],
-				fic_id:localStorage.page==0?'localStorage.page':'0',
+				fic_id:0,
 				fetching:false,
 
 			}
@@ -46,8 +46,12 @@ import { Base64 } from 'js-base64';
 						if(!self.fetching){
 							console.log(self.fic_id)
 							self.fic_id=parseInt(self.fic_id)+1
+							console.log(typeof(localStorage.page))
 							if(typeof(localStorage.page)!=='number'){
+								localStorage.page=parseInt(localStorage.page)
+								localStorage.page=0
 							}
+
 							localStorage.page=parseInt(localStorage.page)+1
 						}
 						　
