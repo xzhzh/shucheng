@@ -77,7 +77,7 @@ import moment from 'moment'
 			
 		},
 	mounted(){
-		console.log(this.$route.query.fiction_id)
+		/*console.log(this.$route.query.fiction_id)*/
 		  var id=this.$route.query.fiction_id
 		 Mint.Indicator.open({
 		        text: '加载中...',
@@ -126,14 +126,16 @@ import moment from 'moment'
 	    		})
 	    	},
 	    	gotocontent(val){
+	    		console.log(val)
 	    		this.$router.push({path:'/content',query:{
 	    			'fiction_id':val.fiction_id,
+	    			'chapter_count':val.chapter_count
 	    		}})
 	    	},
 	    	gotodetail(val){
 				this.$router.push({path:'/detail',query:{
 					'fiction_id':val.book_id,
-					'title':val.title
+					'title':val.title,
 				}})
 			}
 	    }
