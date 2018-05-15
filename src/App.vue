@@ -36,6 +36,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* overflow: hidden; */
 }
 html,body, #app{
   height: 100%;
@@ -47,17 +48,18 @@ html,body, #app{
   top: 0;  
   width: 100%;  
   height: 100%;  
-  transition: all .5s cubic-bezier(.55,0,.1,1);  
+  transition: all .5s cubic-bezier(.55,0,.1,1); 
+
 }  
 .slide-left-enter, .slide-right-leave-active {  
   opacity: 0;  
-  -webkit-transform: translate(30px, 0);  
-  transform: translate(30px, 0);  
+  -webkit-transform: translate(200px, 0);  
+  transform: translate(200px, 0);  
 }  
 .slide-left-leave-active, .slide-right-enter {  
   opacity: 0;  
-  -webkit-transform: translate(-30px, 0);  
-  transform: translate(-30px, 0);  
+  -webkit-transform: translate(-200px, 0);  
+  transform: translate(-200px, 0);  
 }  
 
 </style>

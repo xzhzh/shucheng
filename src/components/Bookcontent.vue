@@ -12,7 +12,7 @@
 			<i class="fa  fa-bars"></i>
 			<p>目录</p>
 		</a>
-		<a href="javascript:" >
+		<a href="javascript:" @click="fontshow()" >
 		   <i class="fa  fa-font"></i>
 		   <p>字体</p>
 		</a>
@@ -25,7 +25,7 @@
 			<p>下载</p>
 		</a>
 	</div>
-	<div class="reader__font" v-show="show">
+	<div class="reader__font" v-show="show && fontShow">
 		<div class="reader__font-size">
 			<span>字号</span>
 			<a href="javascript:" class="reader__font-large" @click="bigfont()">大</a>
@@ -75,6 +75,7 @@ import { Base64 } from 'js-base64';
 				ningth:false,
 				ninght:'夜晚',
 				show:false,
+				fontShow:false,
 
 			}
 		},
@@ -201,7 +202,7 @@ import { Base64 } from 'js-base64';
 				    });
 					  
 				    Mint.Indicator.close();
-					if(localStorage[(this.fiction_id)]<=this.chapter_count){
+					if(localStorage[(this.fiction_id)]==this.chapter_count){
 						alert("已经是最后一页了")
 					}else{
 					   localStorage[(this.fiction_id)]=parseInt(localStorage[(this.fiction_id)])+1
@@ -251,6 +252,9 @@ import { Base64 } from 'js-base64';
 			},
 			showtit(){
 				this.show=!this.show
+			},
+			fontshow(){
+				this.fontShow=!this.fontShow
 			}
 		}
 	}
@@ -300,7 +304,7 @@ import { Base64 } from 'js-base64';
 .reader__mask {
 	height: 130px; 
 	background: pink;
-    top: 25%;
+    top: 28%;
     bottom: 0;
     background: none;
 }
