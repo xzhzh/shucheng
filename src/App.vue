@@ -22,6 +22,7 @@ export default {
         this.transitionName = 'slide-left';  
       }  
      }
+     
    }
 }
 </script>
